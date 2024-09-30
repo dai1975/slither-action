@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -ex -o pipefail
-env
+set -e -o pipefail
+
 # smoelius: `get` works for non-standard variable names like `INPUT_CORPUS-DIR`.
 get() {
     env | sed -n "s/^$1=\(.*\)/\1/;T;p"
@@ -271,6 +271,7 @@ FAILONFLAG="$(fail_on_flags)"
 echo "[-} forge config..."
 which forge
 forge config --json
+cat foundry.toml
 
 if [[ -z "$SLITHERARGS" ]]; then
     slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG | tee "$STDOUTFILE"
