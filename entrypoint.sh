@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -e -o pipefail
-
+set -ex -o pipefail
+env
 # smoelius: `get` works for non-standard variable names like `INPUT_CORPUS-DIR`.
 get() {
     env | sed -n "s/^$1=\(.*\)/\1/;T;p"
@@ -49,6 +49,8 @@ fail_on_flags()
 {
     INSTALLED_VERSION="$(slither --version)"
     FAIL_ON_LEVEL="$(get INPUT_FAIL-ON)"
+    echo "INSTALLED_VERSION=$INSTALLED_VERSION"
+    echo "FAIL_ON_LEVEL=$FAIL_ON_LEVEL"
 
     if [ "$FAIL_ON_LEVEL" = "config" ]; then
        return
@@ -268,10 +270,15 @@ fi
 
 FAILONFLAG="$(fail_on_flags)"
 
+echo "[-} forge config..."
+which forge
+forge config --json
+
 if [[ -z "$SLITHERARGS" ]]; then
     slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG | tee "$STDOUTFILE"
 else
     echo "[-] SLITHERARGS provided. Running slither with extra arguments"
+    printf "%s\n" "$SLITHERARGS" | echo xargs slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG
     printf "%s\n" "$SLITHERARGS" | xargs slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG | tee "$STDOUTFILE"
 fi
 
