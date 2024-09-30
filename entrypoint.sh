@@ -49,8 +49,6 @@ fail_on_flags()
 {
     INSTALLED_VERSION="$(slither --version)"
     FAIL_ON_LEVEL="$(get INPUT_FAIL-ON)"
-    echo "INSTALLED_VERSION=$INSTALLED_VERSION"
-    echo "FAIL_ON_LEVEL=$FAIL_ON_LEVEL"
 
     if [ "$FAIL_ON_LEVEL" = "config" ]; then
        return
