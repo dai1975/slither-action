@@ -269,6 +269,9 @@ fi
 FAILONFLAG="$(fail_on_flags)"
 
 if [[ -z "$SLITHERARGS" ]]; then
+    echo "run: slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG"
+    which forge
+    forge config --json
     slither "$TARGET" $SARIFFLAG $IGNORECOMPILEFLAG $FAILONFLAG $CONFIGFLAG | tee "$STDOUTFILE"
 else
     echo "[-] SLITHERARGS provided. Running slither with extra arguments"
